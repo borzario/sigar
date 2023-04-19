@@ -1,11 +1,12 @@
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
 
 ib_main = InlineKeyboardButton(text="В начало", callback_data="в начало")
+ikb_main = InlineKeyboardMarkup(row_width=1, one_time_keyboard=True).row(ib_main)
 
 b_works = KeyboardButton("Услуги компании")
 b_adress = KeyboardButton("Адрес компании")
 b_call = KeyboardButton("Связаться со специалистом компании")
-b_info = KeyboardButton("Справочная информация")
+b_info = KeyboardButton("Справочник")
 b_gis = KeyboardButton("Оставить отзыв в 2Гис")
 kb_mainwindow = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 kb_mainwindow.row(b_works).row(b_adress).row(b_call).row(b_info).row(b_gis)
