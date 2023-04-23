@@ -1,5 +1,6 @@
 import sqlite3 as sq
 
+
 def db_start():
     global base, cur
     base = sq.connect("tarakan.db")
@@ -10,6 +11,7 @@ def db_start():
     base.execute('CREATE TABLE IF NOT EXISTS admins(user_id TEXT)')
     base.commit()
 
+
 async def user_add(message):
     try:
         cur.execute("INSERT INTO users1 VALUES (?, ?)", (message.from_user.id, message.text))
@@ -17,3 +19,7 @@ async def user_add(message):
     except:
         print("user was added early")
     base.commit()
+
+
+async def get_admins_list() ->list:
+    return [i[0] for i in cur.execute("SELECT * FROM admins").fetchall()]

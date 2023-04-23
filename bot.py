@@ -15,6 +15,8 @@ async def on_startup(_):
 async def start(message: types.Message):
     await bot.send_message(message.from_user.id, "салам, ты кто будешь?",
                            reply_markup=keyboard.kb_firstwindow)
+    admins = await data_base.get_admins_list()
+    print(admins)
 
 @dp.message_handler(lambda message: message.text.lower() in ["частное лицо", "компания"])
 async def go_to_main_fromstart(message: types.Message):
