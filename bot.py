@@ -87,6 +87,7 @@ async def any_shit2(message : types.Message, a="nnn"):
     await bot.send_message(message.from_user.id, message.video.file_id)
 
 client.registr_client(dp)
+admin.registr_admin(dp)
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True, on_startup=on_startup)

@@ -32,3 +32,25 @@ async def close_call(message: types.Message):
         await data_base.get_new_calls(message)
         await bot.send_message(message.from_user.id, "choose action, bro",
                                reply_markup=keyboard.kb_admin_main)
+
+
+class CallClose(StatesGroup):
+    sost1 = State()
+
+
+async def start_close_call(message: types.Message):
+    await message.reply("what call you want to close? (Write number)")
+    await CallClose.sost1.set()
+
+async def close_call(message : types.Message, state = FSMContext):
+    async with state.proxy() as data:
+        data["number"] = message.text
+    await data_base.close_call(message, data["number"])
+    await state.finish()
+
+
+def registr_admin(dp: Dispatcher):
+    dp.register_message_handler(start_close_call, lambda message: "Close call" in message.text, state=None)
+   # dp.register_message_handler(cancel, state="*", commands='отмена')
+   # dp.register_message_handler(cancel, Text(equals='отмена', ignore_case=True), state="*")
+    dp.register_message_handler(close_call, state=CallClose.sost1)
