@@ -1,1 +1,1 @@
-from functional import client
+from functional import client, admin
