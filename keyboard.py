@@ -26,6 +26,17 @@ b_admin = KeyboardButton("Admin")
 kb_admin_first = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 kb_admin_first.add(b_admin, b_user)
 
+b_dezenfection = KeyboardButton("Дезенфекция")
+b_dezinsection = KeyboardButton("Дезинсекция")
+b_deratization = KeyboardButton("Дератизация")
+b_dezodaration = KeyboardButton("Дезодорация")
+kb_servises = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+kb_servises.add(b_dezinsection, b_dezenfection).add(b_deratization, b_dezodaration)
+
+b_coast = KeyboardButton("Расчитать стоимость")
+b_master = KeyboardButton("Вызов мастера")
+kb_works = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+kb_works.add(b_coast, b_master)
 
 """Here is admins buttons and keyboards"""
 b_get_all_calls = KeyboardButton("Get all calls")
@@ -33,3 +44,4 @@ b_get_new_calls = KeyboardButton("Get new calls")
 b_close_call = KeyboardButton("Close call")
 kb_admin_main = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_admin_main.add(b_get_new_calls, b_get_all_calls, b_close_call)
+

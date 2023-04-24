@@ -72,8 +72,19 @@ async def push_call_yourself(message: types.Message):
 
 @dp.message_handler(lambda message: "Услуги компании" in message.text)
 async def push_works(message: types.Message):
-    await bot.send_message(message.from_user.id, "here wil be located main functions of company",
+    await bot.send_message(message.from_user.id, "наша компания предоставляет профессиональные услуги по:"
+                                                 "\n дезинфекции"
+                                                 "\n дезинсекции"
+                                                 "\n дератизации"
+                                                 "\n денацификации",
+                           reply_markup=keyboard.kb_works)
+    await bot.send_message(message.from_user.id, "click for going to main menu",
                            reply_markup=keyboard.ikb_main)
+
+
+
+
+
 
 
 @dp.message_handler(content_types=['photo'])
