@@ -4,11 +4,12 @@ import data_base
 import keyboard
 from create_bot import dp, bot
 from aiogram import types
+from functional import *
+
 
 async def on_startup(_):
     data_base.db_start()
     print("Папа в здании")
-
 
 
 @dp.message_handler(lambda message: "start" in message.text.lower())
@@ -51,9 +52,17 @@ async def push_2Gis(message: types.Message):
 
 @dp.message_handler(lambda message: "Связаться со специалистом компании" in message.text)
 async def push_call(message: types.Message):
-    await bot.send_message(message.from_user.id, "Тут будут ссылки на компанию, кнопка на заявку звонка",
+    await bot.send_message(message.from_user.id, "Выберите удобный способ связи",
+                           reply_markup=keyboard.kb_call)
+    await bot.send_message(message.from_user.id, "Для возврата в главное меню нажмите кнопоньку",
                            reply_markup=keyboard.ikb_main)
 
+@dp.message_handler(lambda message: "Связаться самому" in message.text)
+async def push_call_yourself(message: types.Message):
+    await bot.send_message(message.from_user.id, "телефон компании - 666666\n"
+                                                 "telegram - @karaperidol\n"
+                                                 "watsapp - 89964147180",
+                           reply_markup=keyboard.ikb_main)
 
 @dp.message_handler(lambda message: "Услуги компании" in message.text)
 async def push_works(message: types.Message):
@@ -71,6 +80,7 @@ async def any_shit(message : types.Message, a="nnn"):
 async def any_shit2(message : types.Message, a="nnn"):
     await bot.send_message(message.from_user.id, message.video.file_id)
 
+client.registr_client(dp)
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True, on_startup=on_startup)

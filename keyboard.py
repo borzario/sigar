@@ -16,7 +16,10 @@ b_gis = KeyboardButton("Оставить отзыв в 2Гис")
 kb_mainwindow = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 kb_mainwindow.row(b_works).row(b_adress).row(b_call).row(b_info).row(b_gis)
 
-
+b_call_to = KeyboardButton("Заказать звонок")
+b_get_contacs = KeyboardButton("Связаться самому")
+kb_call = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+kb_call.add(b_call_to, b_get_contacs)
 
 """
 b_time = KeyboardButton("Режим работы")

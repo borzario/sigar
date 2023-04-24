@@ -2,3 +2,4 @@ venv
 .idea
 tgcoin.py
 tarakan.db
+list_of_admins.py
