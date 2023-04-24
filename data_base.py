@@ -41,7 +41,7 @@ async def get_all_calls(message):
     all_calls = cur.execute("SELECT ROWID, * FROM call").fetchall()
     for i in all_calls:
         await bot.send_message(message.from_user.id, f"№ {i[0]}, name {i[1]}, contact {i[2]}, time {i[3]},"
-                                                     f"status {i[4]}")
+                                                     f" status {i[4]}")
 
 
 async def get_new_calls(message):
