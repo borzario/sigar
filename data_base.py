@@ -35,3 +35,23 @@ async def add_call_to_user(state):
         for i in list_of_admins.admins:
             await bot.send_message(i, f"Заказа звонка №{cur.execute('SELECT MAX(ROWID) from call').fetchall()[0][0]}, ot "
                                       f"{data['name']} {data['contact']} na {data['time']}")
+
+
+async def get_all_calls(message):
+    all_calls = cur.execute("SELECT ROWID, * FROM call").fetchall()
+    for i in all_calls:
+        await bot.send_message(message.from_user.id, f"№ {i[0]}, name {i[1]}, contact {i[2]}, time {i[3]},"
+                                                     f"status {i[4]}")
+
+
+async def get_new_calls(message):
+    all_calls = cur.execute("SELECT ROWID, * FROM call WHERE status IS NULL").fetchall()
+    for i in all_calls:
+        await bot.send_message(message.from_user.id, f"№ {i[0]}, name {i[1]}, contact {i[2]}, time {i[3]}")
+
+
+async def close_call(message,):
+    all_calls = cur.execute("SELECT * FROM call WHERE ROWID == , * FROM call").fetchall()
+    for i in all_calls:
+        await bot.send_message(message.from_user.id, f"№ {i[0]}, name {i[1]}, contact {i[2]}, time {i[3]},"
+                                                     f"status {i[4]}")

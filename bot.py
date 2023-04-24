@@ -2,9 +2,10 @@ from aiogram.utils import executor
 
 import data_base
 import keyboard
+import list_of_admins
 from create_bot import dp, bot
 from aiogram import types
-from functional import *
+from functional import client, admin
 
 
 async def on_startup(_):
@@ -14,7 +15,11 @@ async def on_startup(_):
 
 @dp.message_handler(lambda message: "start" in message.text.lower())
 async def start(message: types.Message):
-    await bot.send_message(message.from_user.id, "салам, ты кто будешь?",
+    if str(message.from_user.id) in list_of_admins.admins:
+        await bot.send_message(message.from_user.id, "choose your status",
+                               reply_markup=keyboard.kb_admin_first)
+    else:
+        await bot.send_message(message.from_user.id, "салам, ты кто будешь?",
                            reply_markup=keyboard.kb_firstwindow)
 
 
@@ -26,9 +31,10 @@ async def go_to_main_fromstart(message: types.Message):
 
 
 @dp.callback_query_handler(text="в начало")
+@dp.message_handler(lambda message: "user" == message.text.lower())
 async def go_to_main(message: types.Message):
-    await bot.send_message(message.from_user.id, "Здравствуй, дорогой друг! Будем травить!",
-                           reply_markup=keyboard.kb_mainwindow)
+       await bot.send_message(message.from_user.id, "Здравствуй, дорогой друг! Будем травить!",
+                               reply_markup=keyboard.kb_mainwindow)
 
 
 @dp.message_handler(lambda message: "адрес компании" in message.text.lower())

@@ -21,20 +21,15 @@ b_get_contacs = KeyboardButton("Связаться самому")
 kb_call = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 kb_call.add(b_call_to, b_get_contacs)
 
-"""
-b_time = KeyboardButton("Режим работы")
-b_adress = KeyboardButton("Адрес")
-b_contacts = KeyboardButton("Контакты")
-b_first = KeyboardButton("В начало")
-b_usligi = KeyboardButton("Услуги нашего заведения")
-b_about = KeyboardButton("О нашем баре")
-kb_mainwindow = ReplyKeyboardMarkup(resize_keyboard=True)
-kb_mainwindow.row(b_usligi).row(b_about)
+b_user = KeyboardButton("User")
+b_admin = KeyboardButton("Admin")
+kb_admin_first = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+kb_admin_first.add(b_admin, b_user)
 
-b_masters = KeyboardButton("Наши мастера")
-b_interier = KeyboardButton("Интерьер")
-ib_about = InlineKeyboardButton(text="Назад", callback_data="О нашем баре")
-kb_ourbar = ReplyKeyboardMarkup(resize_keyboard=True)
-kb_ourbar.row(b_masters).row(b_interier).row(b_time, b_adress, b_contacts)
-ikb_main = InlineKeyboardMarkup(row_width=1, one_time_keyboard=True).row(ib_main)
-ikb_about = InlineKeyboardMarkup(row_width=1).row(ib_about)"""
+
+"""Here is admins buttons and keyboards"""
+b_get_all_calls = KeyboardButton("Get all calls")
+b_get_new_calls = KeyboardButton("Get new calls")
+b_close_call = KeyboardButton("Close call")
+kb_admin_main = ReplyKeyboardMarkup(resize_keyboard=True)
+kb_admin_main.add(b_get_new_calls, b_get_all_calls, b_close_call)
