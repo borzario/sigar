@@ -54,21 +54,21 @@ class MasterCall(StatesGroup):
     sost5 = State()
 
 async def start_master_call(message: types.Message):
-    await message.reply("Как к тебе обращаться, черт?")
+    await message.reply("Как к тебе обращаться, черт?", reply_markup=keyboard.kb_cancel)
     await MasterCall.sost1.set()
 
 
 async def get_name_for_master(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
         data["name"] = message.text
-    await message.reply("Куда тебе шуметь")
+    await message.reply("Куда тебе шуметь", reply_markup=keyboard.kb_cancel)
     await MasterCall.sost2.set()
 
 
 async def get_contact_for_master(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
         data["contact"] = message.text
-    await message.reply("when?")
+    await message.reply("when?", reply_markup=keyboard.kb_cancel)
     await MasterCall.sost3.set()
 
 
@@ -82,7 +82,7 @@ async def get_service_info(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
         data["service"] = message.text
         data["type"] = await data_base.get_info_about_user(message)
-    await message.reply("write about your problem")
+    await message.reply("write about your problem", reply_markup=keyboard.kb_cancel)
     await MasterCall.sost5.set()
 
 async def get_discription(message: types.Message, state=FSMContext):
