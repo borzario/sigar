@@ -16,7 +16,7 @@ class CallOrder(StatesGroup):
     sost4 = State()
 
 async def start_order_call(message: types.Message):
-    await message.reply("Как к тебе обращаться, черт?")
+    await message.reply("Как к тебе обращаться, черт?", reply_markup=keyboard.kb_cancel)
     await CallOrder.sost1.set()
 
 async def cancel(message : types.Message, state = FSMContext):
@@ -24,18 +24,18 @@ async def cancel(message : types.Message, state = FSMContext):
     if current_state is None:
         return
     await state.finish()
-    await message.reply("OK")
+    await message.reply("OK", reply_markup=keyboard.kb_mainwindow)
 
 async def get_name(message : types.Message, state = FSMContext):
     async with state.proxy() as data:
         data["name"] = message.text
-    await message.reply("Куда тебе шуметь")
+    await message.reply("Куда тебе шуметь", reply_markup=keyboard.kb_cancel)
     await CallOrder.sost2.set()
 
 async def get_contact(message: types.Message, state=FSMContext):
     async with state.proxy() as data:
         data["contact"] = message.text
-    await message.reply("when?")
+    await message.reply("when?", reply_markup=keyboard.kb_cancel)
     await CallOrder.sost3.set()
 
 async def get_time(message: types.Message, state=FSMContext):

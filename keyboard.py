@@ -49,3 +49,6 @@ kb_admin_main = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_admin_main.add(b_get_new_calls, b_get_all_calls, b_close_call)
 kb_admin_main.row(b_get_new_oders, b_get_all_oders, b_close_oder)
 
+b_cancel = KeyboardButton("Отмена")
+kb_cancel = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(b_cancel)
+
