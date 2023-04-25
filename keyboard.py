@@ -42,6 +42,14 @@ kb_works.add(b_coast, b_master)
 b_get_all_calls = KeyboardButton("Get all calls")
 b_get_new_calls = KeyboardButton("Get new calls")
 b_close_call = KeyboardButton("Close call")
+b_get_all_oders = KeyboardButton("Get all calls")
+b_get_new_oders = KeyboardButton("Get new calls")
+b_close_oder = KeyboardButton("Close call")
 kb_admin_main = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_admin_main.add(b_get_new_calls, b_get_all_calls, b_close_call)
+kb_admin_main.add((b_get_new_oders, b_get_all_oders, b_close_oder))
 
+
+
+kb_admin_oder = ReplyKeyboardMarkup(resize_keyboard=True)
+kb_admin_oder.add(b_get_new_calls, b_get_all_calls, b_close_call)
