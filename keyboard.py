@@ -45,10 +45,18 @@ b_close_call = KeyboardButton("Close call")
 b_get_all_oders = KeyboardButton("Get all oders")
 b_get_new_oders = KeyboardButton("Get new oders")
 b_close_oder = KeyboardButton("Close oder")
+b_give_order = KeyboardButton("Give to")
 kb_admin_main = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_admin_main.add(b_get_new_calls, b_get_all_calls, b_close_call)
 kb_admin_main.row(b_get_new_oders, b_get_all_oders, b_close_oder)
+kb_admin_main.row(b_give_order)
 
 b_cancel = KeyboardButton("Отмена")
 kb_cancel = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(b_cancel)
+
+b_accept = KeyboardButton("Accept")
+b_dislike = KeyboardButton("Dislike")
+kb_accepting = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(b_accept, b_dislike)
+
+
 

@@ -1,4 +1,6 @@
 import sqlite3 as sq
+
+import keyboard
 import list_of_admins
 from create_bot import *
 
@@ -14,6 +16,7 @@ def db_start():
     base.execute('CREATE TABLE IF NOT EXISTS call(name TEXT, contact TEXT, time TEXT, status TEXT)')
     base.execute('CREATE TABLE IF NOT EXISTS oder(name TEXT, contact TEXT, time TEXT, '
                  'service TEXT, type TEXT, discription TEXT, status TEXT)')
+    base.execute('CREATE TABLE IF NOT EXISTS order_worker(number TEXT, worker TEXT, status TEXT)')
     base.commit()
 
 
@@ -93,3 +96,24 @@ async def close_oder(message, oder_number: str):
     cur.execute(f"UPDATE oder SET status == ? WHERE ROWID == {oder_number}", (f"closed",))
     base.commit()
     await bot.send_message(message.from_user.id, f"position number {oder_number} is closed")
+
+
+async def send_order_to_master(state):
+    async with state.proxy() as data:
+        order: tuple = cur.execute(f"SELECT * FROM oder WHERE ROWID == {data['number']}").fetchall()[0]
+        await bot.send_message(data['master'], f"{order}", reply_markup=keyboard.kb_accepting)
+        cur.execute(f"INSERT INTO order_worker VALUES (?, ?, ?)", tuple([data['number'], list_of_admins.workers_back[f"{data['master']}"], None]))
+        base.commit()
+
+async def accept_order(message):
+    m_rowid = cur.execute("SELECT MAX(ROWID) FROM order_worker").fetchall()[0][0]
+    content = cur.execute(f"SELECT * FROM order_worker WHERE ROWID == {m_rowid}").fetchall()[0]
+    if message.text.lower() == "accept":
+        cur.execute(f"UPDATE order_worker SET status == ? WHERE ROWID == {m_rowid}", (f"{message.text}",))
+        cur.execute(f"UPDATE oder SET status == ? WHERE ROWID == {content[0]}", (content[1],))
+        base.commit()
+    else:
+        cur.execute(f"UPDATE order_worker SET status == ? WHERE ROWID == {m_rowid}", (f"{message.text}",))
+        base.commit()
+
+

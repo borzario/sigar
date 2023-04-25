@@ -42,3 +42,10 @@ async def get_new_oders(message: types.Message):
         await data_base.get_new_oders(message)
         await bot.send_message(message.from_user.id, "choose action, bro",
                                reply_markup=keyboard.kb_admin_main)
+
+
+@dp.message_handler(lambda message: message.text.lower() in ['accept', 'dislike'])
+async def accept_order(message: types.Message):
+    if str(message.from_user.id) in list_of_admins.workers_list:
+        await data_base.accept_order(message)
+        await message.reply("done")
