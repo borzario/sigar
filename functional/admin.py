@@ -27,7 +27,7 @@ async def get_all_calls(message: types.Message):
 
 
 @dp.message_handler(lambda message: "get new calls" == message.text.lower())
-async def close_call(message: types.Message):
+async def get_new_call(message: types.Message):
     if str(message.from_user.id) in list_of_admins.admins:
         await data_base.get_new_calls(message)
         await bot.send_message(message.from_user.id, "choose action, bro",
@@ -49,8 +49,45 @@ async def close_call(message : types.Message, state = FSMContext):
     await state.finish()
 
 
+@dp.message_handler(lambda message: "get all oders" == message.text.lower())
+async def get_all_oders(message: types.Message):
+    if str(message.from_user.id) in list_of_admins.admins:
+        await data_base.get_all_oders(message)
+        await bot.send_message(message.from_user.id, "choose action, bro",
+                               reply_markup=keyboard.kb_admin_main)
+
+
+@dp.message_handler(lambda message: "get new oders" == message.text.lower())
+async def get_new_oders(message: types.Message):
+    if str(message.from_user.id) in list_of_admins.admins:
+        await data_base.get_new_oders(message)
+        await bot.send_message(message.from_user.id, "choose action, bro",
+                               reply_markup=keyboard.kb_admin_main)
+
+
+class OderClose(StatesGroup):
+    sost1 = State()
+
+
+async def start_close_oder(message: types.Message):
+    await message.reply("what oder you want to close? (Write number)")
+    await OderClose.sost1.set()
+
+async def close_oder(message : types.Message, state = FSMContext):
+    async with state.proxy() as data:
+        data["number"] = message.text
+    await data_base.close_oder(message, data["number"])
+    await state.finish()
+
+
+
+
+
 def registr_admin(dp: Dispatcher):
     dp.register_message_handler(start_close_call, lambda message: "Close call" in message.text, state=None)
+    dp.register_message_handler(start_close_oder, lambda message: "Close oder" in message.text, state=None)
    # dp.register_message_handler(cancel, state="*", commands='отмена')
    # dp.register_message_handler(cancel, Text(equals='отмена', ignore_case=True), state="*")
     dp.register_message_handler(close_call, state=CallClose.sost1)
+    dp.register_message_handler(close_oder, state=OderClose.sost1)
+

@@ -12,7 +12,7 @@ def db_start():
     base.execute('CREATE TABLE IF NOT EXISTS users1(user_id TEXT PRIMARY KEY, type TEXT)')
     base.execute('CREATE TABLE IF NOT EXISTS admins(user_id TEXT)')
     base.execute('CREATE TABLE IF NOT EXISTS call(name TEXT, contact TEXT, time TEXT, status TEXT)')
-    base.execute('CREATE TABLE IF NOT EXISTS master(name TEXT, contact TEXT, time TEXT, '
+    base.execute('CREATE TABLE IF NOT EXISTS oder(name TEXT, contact TEXT, time TEXT, '
                  'service TEXT, type TEXT, discription TEXT, status TEXT)')
     base.commit()
 
@@ -64,7 +64,7 @@ async def get_info_about_user(message) -> str:
 
 async def add_master_call(state):
     async with state.proxy() as data:
-        cur.execute("INSERT INTO master VALUES (?, ?, ?, ?, ?, ?, ?)", tuple([data["name"], data["contact"],
+        cur.execute("INSERT INTO oder VALUES (?, ?, ?, ?, ?, ?, ?)", tuple([data["name"], data["contact"],
                                                                             data["time"], data["service"],
                                                                             data["type"], data["discription"],
                                                                             None]))
@@ -74,3 +74,22 @@ async def add_master_call(state):
                                           f"ot {data['name']} {data['contact']} na {data['time']}, service - {data['service']},"
                                           f"for {data['type']}, problem == {data['discription']}==")
 
+
+async def get_all_oders(message):
+    all_oders = cur.execute("SELECT ROWID, * FROM oder").fetchall()
+    for i in all_oders:
+        await bot.send_message(message.from_user.id, f"№ {i[0]}, name {i[1]}, contact {i[2]}, time {i[3]}, service - {i[4]}, "
+                                                     f" type - {i[5]}, problem - {i[6]}, status {i[7]}")
+
+
+async def get_new_oders(message):
+    new_oders = cur.execute("SELECT ROWID, * FROM oder WHERE status IS NULL").fetchall()
+    for i in new_oders:
+        await bot.send_message(message.from_user.id, f"№ {i[0]}, name {i[1]}, contact {i[2]}, time {i[3]}, service - {i[4]}, "
+                                                     f" type - {i[5]}, problem - {i[6]}")
+
+
+async def close_oder(message, oder_number: str):
+    cur.execute(f"UPDATE oder SET status == ? WHERE ROWID == {oder_number}", (f"closed",))
+    base.commit()
+    await bot.send_message(message.from_user.id, f"position number {oder_number} is closed")
