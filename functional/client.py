@@ -2,8 +2,10 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters import Text
+from create_bot import *
 import data_base
 import keyboard
+import price
 
 
 class CallOrder(StatesGroup):
@@ -90,12 +92,37 @@ async def get_discription(message: types.Message, state=FSMContext):
     await state.finish()
 
 
+class PriseGetting(StatesGroup):
+    sost1 = State()
+
+
+async def get_cost(message: types.Message):
+    await bot.send_message(message.from_user.id, "выбери услугу",
+                           reply_markup=keyboard.kb_servises)
+    await bot.send_message(message.from_user.id, "Для возврата тыкай сюды",
+                           reply_markup=keyboard.kb_servises)
+    await PriseGetting.sost1.set()
+
+
+async def get_serv_for_price(message: types.Message, state=FSMContext):
+    if await data_base.get_user_type(message) == "Компания":
+        await bot.send_message(message.from_user.id, f"{price.ur_user[message.text]}", reply_markup=keyboard.kb_mainwindow)
+
+    elif await data_base.get_user_type(message) == "Частное лицо":
+        await bot.send_message(message.from_user.id, price.ur_user[message.text], reply_markup=keyboard.kb_mainwindow)
+    await state.finish()
+
+
+
 def registr_client(dp: Dispatcher):
     dp.register_message_handler(start_order_call, lambda message: "Заказать звонок" in message.text, state=None)
     dp.register_message_handler(start_master_call, lambda message: "Вызов мастера" in message.text, state=None)
+    dp.register_message_handler(get_cost, lambda message: message.text.lower() == "узнать стоимость", state=None)
     dp.register_message_handler(cancel, state="*", commands='отмена')
+    dp.register_callback_query_handler(cancel, text="отме")
     dp.register_message_handler(cancel, Text(equals='отмена', ignore_case=True), state="*")
     dp.register_message_handler(get_name, state=CallOrder.sost1)
+    dp.register_message_handler(get_serv_for_price, state=PriseGetting.sost1)
     dp.register_message_handler(get_contact, state=CallOrder.sost2)
     dp.register_message_handler(get_time, state=CallOrder.sost3)
     dp.register_message_handler(get_name_for_master, state=MasterCall.sost1)

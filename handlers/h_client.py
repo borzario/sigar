@@ -31,8 +31,7 @@ async def push_info(message: types.Message):
 
 @dp.message_handler(lambda message: "Оставить отзыв в 2Гис" in message.text)
 async def push_2Gis(message: types.Message):
-    await bot.send_message(message.from_user.id, "Тут будет лежать ссылка на 2 гис, а эата для"
-                                                 "тэста и радости https://www.pornhub.com/",
+    await bot.send_message(message.from_user.id, "https://2gis.ru/tomsk/firm/70000001071171625?m=84.953548%2C56.503529%2F16",
                            reply_markup=keyboard.ikb_main)
 
 
@@ -60,3 +59,6 @@ async def push_works(message: types.Message):
                            reply_markup=keyboard.kb_works)
     await bot.send_message(message.from_user.id, "click for going to main menu",
                            reply_markup=keyboard.ikb_main)
+
+
+

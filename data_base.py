@@ -116,4 +116,6 @@ async def accept_order(message):
         cur.execute(f"UPDATE order_worker SET status == ? WHERE ROWID == {m_rowid}", (f"{message.text}",))
         base.commit()
 
+async def get_user_type(message):
+    return cur.execute(f"SELECT type FROM users1 WHERE user_id == {message.from_user.id}").fetchall()[0][0]
 
