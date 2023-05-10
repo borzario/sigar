@@ -28,7 +28,7 @@ async def get_new_call(message: types.Message):
                                reply_markup=keyboard.kb_admin_main)
 
 
-@dp.message_handler(lambda message: "get all oders" == message.text.lower())
+@dp.message_handler(lambda message: "get all orders" == message.text.lower())
 async def get_all_oders(message: types.Message):
     if str(message.from_user.id) in list_of_admins.admins:
         await data_base.get_all_oders(message)
@@ -36,7 +36,7 @@ async def get_all_oders(message: types.Message):
                                reply_markup=keyboard.kb_admin_main)
 
 
-@dp.message_handler(lambda message: "get new oders" == message.text.lower())
+@dp.message_handler(lambda message: "get new orders" == message.text.lower())
 async def get_new_oders(message: types.Message):
     if str(message.from_user.id) in list_of_admins.admins:
         await data_base.get_new_oders(message)

@@ -14,8 +14,7 @@ def db_start():
     base.execute('CREATE TABLE IF NOT EXISTS users1(user_id TEXT PRIMARY KEY, type TEXT)')
     base.execute('CREATE TABLE IF NOT EXISTS admins(user_id TEXT)')
     base.execute('CREATE TABLE IF NOT EXISTS call(name TEXT, contact TEXT, time TEXT, status TEXT)')
-    base.execute('CREATE TABLE IF NOT EXISTS oder(name TEXT, contact TEXT, time TEXT, '
-                 'service TEXT, type TEXT, discription TEXT, status TEXT)')
+    base.execute('CREATE TABLE IF NOT EXISTS oder(name TEXT, contact TEXT, time TEXT, service TEXT, type TEXT, adress TEXT, discription TEXT,  status TEXT)')
     base.execute('CREATE TABLE IF NOT EXISTS order_worker(number TEXT, worker TEXT, status TEXT)')
     base.commit()
 
@@ -67,29 +66,29 @@ async def get_info_about_user(message) -> str:
 
 async def add_master_call(state):
     async with state.proxy() as data:
-        cur.execute("INSERT INTO oder VALUES (?, ?, ?, ?, ?, ?, ?)", tuple([data["name"], data["contact"],
-                                                                            data["time"], data["service"],
-                                                                            data["type"], data["discription"],
-                                                                            None]))
-        base.commit()
+        try:
+            cur.execute("INSERT INTO oder VALUES (?, ?, ?, ?, ?, ?, ?, ?)", tuple([data["name"], data["contact"], data["time"], data["service"], data["type"],  data["adress"], data["discription"], None]))
+            base.commit()
+        except:
+            print(tuple([data["name"], data["contact"], data["time"], data["service"], data["type"],  data["adress"], data["discription"], None]))
         for i in list_of_admins.admins:
-            await bot.send_message(i, f"Вызов мастера №{cur.execute('SELECT MAX(ROWID) from call').fetchall()[0][0]}, "
-                                          f"ot {data['name']} {data['contact']} na {data['time']}, service - {data['service']},"
-                                          f"for {data['type']}, problem == {data['discription']}==")
+            await bot.send_message(i, f"Новый заказ № {cur.execute('SELECT MAX(ROWID) from call').fetchall()[0][0]}, "
+                                          f"клиент: {data['name']}, контакт: {data['contact']} {data['type']}, время: {data['time']}, "
+                                      f"услуга: {data['service']}, описание: {data['discription']}; адрес: {data['adress']}")
 
 
 async def get_all_oders(message):
     all_oders = cur.execute("SELECT ROWID, * FROM oder").fetchall()
     for i in all_oders:
-        await bot.send_message(message.from_user.id, f"№ {i[0]}, name {i[1]}, contact {i[2]}, time {i[3]}, service - {i[4]}, "
-                                                     f" type - {i[5]}, problem - {i[6]}, status {i[7]}")
+        await bot.send_message(message.from_user.id, f"№ {i[0]}, name: {i[1]}, contact: {i[2]}, time: {i[3]}, service: {i[4]}, "
+                                                     f"type:  {i[5]}, problem: {i[6]}, adress: {i[7]}, status: {i[8]}")
 
 
 async def get_new_oders(message):
     new_oders = cur.execute("SELECT ROWID, * FROM oder WHERE status IS NULL").fetchall()
     for i in new_oders:
-        await bot.send_message(message.from_user.id, f"№ {i[0]}, name {i[1]}, contact {i[2]}, time {i[3]}, service - {i[4]}, "
-                                                     f" type - {i[5]}, problem - {i[6]}")
+        await bot.send_message(message.from_user.id, f"№ {i[0]}, name: {i[1]}, contact: {i[2]}, time: {i[3]}, service: {i[4]}, "
+                                                     f"type:  {i[5]}, problem:  {i[6]}, adress:  {i[7]}")
 
 
 async def close_oder(message, oder_number: str):
@@ -111,9 +110,13 @@ async def accept_order(message):
     if message.text.lower() == "accept":
         cur.execute(f"UPDATE order_worker SET status == ? WHERE ROWID == {m_rowid}", (f"{message.text}",))
         cur.execute(f"UPDATE oder SET status == ? WHERE ROWID == {content[0]}", (content[1],))
+        for i in list_of_admins.admins:
+            await bot.send_message(i, "Работяга подписался под заказ")
         base.commit()
     else:
         cur.execute(f"UPDATE order_worker SET status == ? WHERE ROWID == {m_rowid}", (f"{message.text}",))
+        for i in list_of_admins.admins:
+            await bot.send_message(i, "Работяга слился с заказа")
         base.commit()
 
 async def get_user_type(message):

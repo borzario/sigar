@@ -25,7 +25,7 @@ async def push_adress(message: types.Message):
 
 @dp.message_handler(lambda message: "справочник" in message.text.lower())
 async def push_info(message: types.Message):
-    await bot.send_message(message.from_user.id, "Тараканы тобе отыбут хлеще хохлов, травить надо",
+    await bot.send_message(message.from_user.id, "Раздел находится в разработке",
                            reply_markup=keyboard.ikb_main)
 
 
@@ -51,13 +51,12 @@ async def push_call_yourself(message: types.Message):
 
 @dp.message_handler(lambda message: "Услуги компании" in message.text)
 async def push_works(message: types.Message):
-    await bot.send_message(message.from_user.id, "наша компания предоставляет профессиональные услуги по:"
-                                                 "\n дезинфекции"
-                                                 "\n дезинсекции"
-                                                 "\n дератизации"
-                                                 "\n денацификации",
+    await bot.send_photo(message.from_user.id, "AgACAgIAAxkBAAIGO2RXa9dsSY7IHwlf8Lo3RqKFTNZ4AALZxzEba664SlvbqWQosWz_AQADAgADcwADLwQ",
+                         "Биозащита СЭС - наша команда специализируется на профессиональном уничтожении любых "
+                         "членистоногих вредителей, грызунов, вирусов, грибков и бактерий! Мастера имеют большой опыт "
+                         "работы и гарантировано избавят от нежелательных соседей навсегда!",
                            reply_markup=keyboard.kb_works)
-    await bot.send_message(message.from_user.id, "click for going to main menu",
+    await bot.send_message(message.from_user.id, "Для возврата в главное меню нажмите кнопку",
                            reply_markup=keyboard.ikb_main)
 
 
