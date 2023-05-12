@@ -5,15 +5,15 @@ import data_base
 
 @dp.message_handler(lambda message: message.text.lower() in ["частное лицо", "компания"])
 async def go_to_main_fromstart(message: types.Message):
-    await bot.send_message(message.from_user.id, "Здравствуй, дорогой друг! Будем травить!",
+    await bot.send_message(message.from_user.id, "Приветствуем Вас!",
                            reply_markup=keyboard.kb_mainwindow)
     await data_base.user_add(message)
 
 
 @dp.callback_query_handler(text="в начало")
-@dp.message_handler(lambda message: "user" == message.text.lower())
+@dp.message_handler(lambda message: message.text.lower() in ["user", "/main"])
 async def go_to_main(message: types.Message):
-       await bot.send_message(message.from_user.id, "Здравствуй, дорогой друг! Будем травить!",
+       await bot.send_message(message.from_user.id, "Приветствуем Вас!",
                                reply_markup=keyboard.kb_mainwindow)
 
 
@@ -39,7 +39,7 @@ async def push_2Gis(message: types.Message):
 async def push_call(message: types.Message):
     await bot.send_message(message.from_user.id, "Выберите удобный способ связи",
                            reply_markup=keyboard.kb_call)
-    await bot.send_message(message.from_user.id, "Для возврата в главное меню нажмите кнопоньку",
+    await bot.send_message(message.from_user.id, "Для возврата в главное меню нажмите кнопку",
                            reply_markup=keyboard.ikb_main)
 
 @dp.message_handler(lambda message: "Связаться самому" in message.text)

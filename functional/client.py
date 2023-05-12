@@ -145,7 +145,7 @@ def registr_client(dp: Dispatcher):
     dp.register_message_handler(start_order_call, lambda message: "Заказать звонок" in message.text, state=None)
     dp.register_message_handler(start_master_call, lambda message: "Вызов мастера" in message.text, state=None)
     dp.register_message_handler(get_cost, lambda message: message.text.lower() == "узнать стоимость", state=None)
-    dp.register_message_handler(cancel, state="*", commands='отмена')
+    dp.register_message_handler(cancel, state="*", commands=['отмена', 'cancel'])
     dp.register_callback_query_handler(cancel, Text(equals='отмена', ignore_case=True), state="*")
     dp.register_message_handler(cancel, Text(equals='отмена', ignore_case=True), state="*")
     dp.register_message_handler(get_name, state=CallOrder.sost1)

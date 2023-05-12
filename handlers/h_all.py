@@ -11,5 +11,5 @@ async def start(message: types.Message):
         await bot.send_message(message.from_user.id, "choose your status",
                                reply_markup=keyboard.kb_admin_first)
     else:
-        await bot.send_message(message.from_user.id, "салам, ты кто будешь?",
+        await bot.send_message(message.from_user.id, "Добрый день! Укажите ваш юридический статус",
                            reply_markup=keyboard.kb_firstwindow)
