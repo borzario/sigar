@@ -2,6 +2,8 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import state
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram import types
+
+import keyboard
 from create_bot import *
 import data_base
 import list_of_admins
@@ -44,7 +46,7 @@ class Giveto(StatesGroup):
     sost2 = State()
 
 async def start_give_order(message: types.Message):
-    await message.reply("choose master from the list:\nVasya")
+    await message.reply("choose master from the list", reply_markup=keyboard.kbs_workers)
     await Giveto.sost1.set()
 
 

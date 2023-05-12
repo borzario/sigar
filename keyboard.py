@@ -1,4 +1,5 @@
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
+import list_of_admins
 
 ib_main = InlineKeyboardButton(text="В начало", callback_data="в начало")
 ikb_main = InlineKeyboardMarkup(row_width=1, one_time_keyboard=True).row(ib_main)
@@ -67,5 +68,6 @@ b_accept = KeyboardButton("Accept")
 b_dislike = KeyboardButton("Dislike")
 kb_accepting = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(b_accept, b_dislike)
 
-
+bs_workers = [[KeyboardButton(text=f"{list(list_of_admins.workers.keys())[i]}")] for i in range(len(list_of_admins.workers))]
+kbs_workers = ReplyKeyboardMarkup(keyboard=bs_workers, resize_keyboard=True)
 
