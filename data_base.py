@@ -125,3 +125,4 @@ async def accept_order(message):
 async def get_user_type(message):
     return cur.execute(f"SELECT type FROM users1 WHERE user_id == {message.from_user.id}").fetchall()[0][0]
 
+
