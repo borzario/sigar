@@ -7,8 +7,6 @@ from functional import client, admin
 from handlers import h_admin, h_client, h_all
 
 
-
-
 async def on_startup(_):
     data_base.db_start()
     print("Папа в здании")
@@ -28,4 +26,4 @@ client.registr_client(dp)
 admin.registr_admin(dp)
 
 if __name__ == "__main__":
-    executor.start_polling(dp, skip_updates=True, on_startup=on_startup)
+    executor.start_polling(dp,  skip_updates=True, on_startup=on_startup)

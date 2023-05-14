@@ -13,3 +13,10 @@ async def start(message: types.Message):
     else:
         await bot.send_message(message.from_user.id, "Добрый день! Укажите ваш юридический статус",
                            reply_markup=keyboard.kb_firstwindow)
+
+
+@dp.message_handler(lambda message: "uns" in message.text.lower())
+async def start(message: types.Message):
+    print(list(list_of_admins.workers.keys()))
+    await bot.send_message(message.from_user.id, "choose your status",
+                               reply_markup=keyboard.kbs_workers)

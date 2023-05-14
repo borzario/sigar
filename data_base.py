@@ -72,7 +72,7 @@ async def add_master_call(state):
         except:
             print(tuple([data["name"], data["contact"], data["time"], data["service"], data["type"],  data["adress"], data["discription"], None]))
         for i in list_of_admins.admins:
-            await bot.send_message(i, f"Новый заказ № {cur.execute('SELECT MAX(ROWID) from call').fetchall()[0][0]}, "
+            await bot.send_message(i, f"Новый заказ № {cur.execute('SELECT MAX(ROWID) from oder').fetchall()[0][0]}, "
                                           f"клиент: {data['name']}, контакт: {data['contact']} {data['type']}, время: {data['time']}, "
                                       f"услуга: {data['service']}, описание: {data['discription']}; адрес: {data['adress']}")
 
@@ -101,15 +101,18 @@ async def send_order_to_master(state):
     async with state.proxy() as data:
         order: tuple = cur.execute(f"SELECT * FROM oder WHERE ROWID == {data['number']}").fetchall()[0]
         await bot.send_message(data['master'], f"{order}", reply_markup=keyboard.kb_accepting)
-        cur.execute(f"INSERT INTO order_worker VALUES (?, ?, ?)", tuple([data['number'], list_of_admins.workers_back[f"{data['master']}"], None]))
+        cur.execute(f"INSERT INTO order_worker VALUES (?, ?, ?)", tuple([data['number'], data['master'], None]))
         base.commit()
 
 async def accept_order(message):
-    m_rowid = cur.execute("SELECT MAX(ROWID) FROM order_worker").fetchall()[0][0]
+    m_rowid = cur.execute(f"SELECT MAX(ROWID) FROM order_worker WHERE worker == {str(message.from_user.id)} ").fetchall()[0][0]
+    print(m_rowid)
     content = cur.execute(f"SELECT * FROM order_worker WHERE ROWID == {m_rowid}").fetchall()[0]
+    print(content)
+
     if message.text.lower() == "accept":
         cur.execute(f"UPDATE order_worker SET status == ? WHERE ROWID == {m_rowid}", (f"{message.text}",))
-        cur.execute(f"UPDATE oder SET status == ? WHERE ROWID == {content[0]}", (content[1],))
+        cur.execute(f"UPDATE oder SET status == ? WHERE ROWID == {content[0]}", (list_of_admins.workers_back[content[1]],))
         for i in list_of_admins.admins:
             await bot.send_message(i, "Работяга подписался под заказ")
         base.commit()
