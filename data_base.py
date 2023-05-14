@@ -54,6 +54,7 @@ async def get_new_calls(message):
         await bot.send_message(message.from_user.id, f"№ {i[0]}, name {i[1]}, contact {i[2]}, time {i[3]}")
 
 
+
 async def close_call(message, call_number):
     cur.execute(f"UPDATE call SET status == ? WHERE ROWID == {call_number}", (f"closed",))
     base.commit()
