@@ -44,7 +44,7 @@ async def push_call(message: types.Message):
 
 @dp.message_handler(lambda message: "Связаться самому" in message.text)
 async def push_call_yourself(message: types.Message):
-    await bot.send_message(message.from_user.id, "телефон компании - 666666\n"
+    await bot.send_message(message.from_user.id, "телефон компании - 8-996-414-71-80\n"
                                                  "telegram - @karaperidol\n"
                                                  "watsapp - 89964147180",
                            reply_markup=keyboard.ikb_main)
