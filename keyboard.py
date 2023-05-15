@@ -18,7 +18,7 @@ b_call = KeyboardButton("Связаться со специалистом ком
 b_info = KeyboardButton("Справочник")
 b_gis = KeyboardButton("Оставить отзыв в 2Гис")
 kb_mainwindow = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-kb_mainwindow.row(b_works).row(b_adress).row(b_call).row(b_info).row(b_gis)
+kb_mainwindow.row(b_works).row(b_adress).row(b_call).row(b_gis)
 
 b_call_to = KeyboardButton("Заказать звонок")
 b_get_contacs = KeyboardButton("Связаться самому")
